@@ -13,7 +13,7 @@ miku = con.miku
 
 @app.route("/")
 def hello():
-    return "<h1>辣鸡姥爷git</h1>"
+    return "<h1>辣鸡姥爷git成功了</h1>"
 
 # @app.route("/201966")
 # def mie():
