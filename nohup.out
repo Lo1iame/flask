@@ -1,0 +1,28 @@
+ * Running on http://0.0.0.0:5000/
+ * Restarting with reloader
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/bird/venv/lib/python2.7/site-packages/pymongo/periodic_executor.py", line 170, in _shutdown_executors
+    executor.join(1)
+  File "/bird/venv/lib/python2.7/site-packages/pymongo/periodic_executor.py", line 96, in join
+    self._thread.join(timeout)
+  File "/usr/lib64/python2.7/threading.py", line 962, in join
+    self.__block.wait(delay, balancing)
+  File "/usr/lib64/python2.7/threading.py", line 362, in wait
+    _sleep(delay)
+KeyboardInterrupt
+Error in sys.exitfunc:
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/bird/venv/lib/python2.7/site-packages/pymongo/periodic_executor.py", line 170, in _shutdown_executors
+    executor.join(1)
+  File "/bird/venv/lib/python2.7/site-packages/pymongo/periodic_executor.py", line 96, in join
+    self._thread.join(timeout)
+  File "/usr/lib64/python2.7/threading.py", line 962, in join
+    self.__block.wait(delay, balancing)
+  File "/usr/lib64/python2.7/threading.py", line 362, in wait
+    _sleep(delay)
+KeyboardInterrupt
