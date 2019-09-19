@@ -24,6 +24,7 @@ miku = con.miku
 def hello():
     return render_template("index.html")
 
+
 #404页面
 @app.errorhandler(404)
 def notFound(e):
