@@ -9,7 +9,7 @@ import pymongo
 from flask import Flask, jsonify, request,render_template
 from flask_cors import *
 from datetime import timedelta
-
+import json
 
 app = Flask(__name__)
 CORS(app,resources={r"/*": {"origins": "*"}})
@@ -19,9 +19,27 @@ app.send_file_max_age_default = timedelta(seconds=1)    #设置缓存文件过�
 con = pymongo.MongoClient("localhost",27017)
 miku = con.miku
 
+
+#获取主页访问次数
+@app.route("/visited_times/")
+def visited_times():
+    with open("./sever.json",'r') as sever_json:
+        sever = json.load(sever_json)
+    return jsonify({"visited_times":sever["visited_times"]})
+
 #主页
 @app.route("/")
-def hello():
+def index():
+    #从server.json得到当前访问次数
+    with open("./sever.json",'r') as sever_json:
+        sever = json.load(sever_json)
+    #访问次数+1 并写入sever.json
+    sever["visited_times"] = sever["visited_times"] + 1
+    with open("./sever.json","w") as sever_json:
+        json.dump(sever,sever_json)
+    
+    
+
     return render_template("index.html")
 
 
