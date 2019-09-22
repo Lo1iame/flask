@@ -5,6 +5,9 @@ html,body{
     font-family: Comic Sans MS, "Comic Sans MS", Arial, sans-serif;
     
 }
+body{
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
 
 @media screen and (min-width: 700px){
     /* i-header */
@@ -27,7 +30,7 @@ html,body{
     }
     .logo-scroll{
         color: #ffafc9;
-        text-shadow: 0px 0px 5px #929fec;
+        text-shadow: 0px 0px 3px #929fec;
     }
     .logo span{
         display: table-cell;
@@ -73,6 +76,7 @@ html,body{
     .nav-menu-content{
         display: none;
     }
+    
 
     /* i-image */
     .image-view{
@@ -195,6 +199,11 @@ html,body{
         display: table;
         text-align: center;
         color: #fff;
+        transition: all 1s;
+    }
+    .logo-scroll{
+        color: #ffafc9;
+        text-shadow: 0px 0px 3px #929fec;
     }
     .logo span{
         display: table-cell;
@@ -210,24 +219,34 @@ html,body{
         width: 40px;
         height: 40px;
         margin: 5px;
+        color: #fff;
         /* background-color:#fff; */
-        background-image: url(../imgs/menu.png);
-        background-size:100% 100%; 
+        /* background-image: url(../imgs/menu.png); */
+        /* background-size:100% 100%;  */
         cursor: pointer;
-
-        
+        transition: all 1s;
+    }
+    .icon-caidan::before{
+        font-size: 40px;
+        line-height: 1;
     }
     .open{
         height: 220px!important;
     }
 
+    .menu-scroll{
+        color: #ffafc9;
+        text-shadow: 0px 0px 3px #929fec;
+    }
+
     .nav-menu-content{
         position: absolute;
-        right: 5px;
+        right: 0px;
         top:50px;
-        width: 65px;
+        width: 60px;
         height: 220px;
-        /* background-color:rgba(255, 255, 255, 0.4); */
+        padding-right: 5px;
+        /* background-color:rgba(0, 0, 0, 0.4); */
         /* border-radius:15px;  */
         /* display: none; */
         /* transition: height 0.5s; */
@@ -241,12 +260,14 @@ html,body{
     }
 
     .nav-menu-item{
+        margin-right: 5px;
         width: calc(100% - 7px);
         height: 30px;
         background-color:#ffafc9;
         margin-top: 20px;
         padding-left: 7px;
         border-radius:10px; 
+        animation-duration:1s;
     }
     
     .nav-icon{

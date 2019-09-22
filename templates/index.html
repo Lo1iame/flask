@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="static/css/index.css">
     <link rel="stylesheet" href="static/css/animate.min.css">
+    <link rel="stylesheet" href="static/css/iconfont.css">
     <script src="static/js/vue.js"></script>
     <script src="static/js/axios.js"></script>
     <script src="static/js/wow.min.js"></script>
@@ -19,19 +20,19 @@
     <!-- 视图:导航栏 -->
     <template id="i-header">
         <div class="header">
-            <div class="logo wow rubberBand" :class="[scroll>500?'logo-scroll':'']">
+            <div class="logo animated rubberBand" :class="[scroll>500?'logo-scroll':'']">
                 <span>LoliMakeusFun</span>
             </div>
-            <div class="nav-btns wow fadeInDown"
-            :style="{backgroundColor:formatColor}"
-            >
+            <div class="nav-btns animated fadeInDown":style="{backgroundColor:formatColor}">
                 <div v-for="(n, i) in nav" :key="i" class="nav-btn">
                     <span>${n.text}</span>
                 </div>
             </div>
-            <div @click="openMenu" class="nav-menu"></div>
-            <div v-if="navopen" class="nav-menu-content" :class="[navopen?'open':'']">
-                <div  v-for="(n, i) in nav" :key="i" class="nav-menu-item wow fadeInRight" :data-wow-delay="i*0.25+'s'">
+            <div @click="openMenu" class="nav-menu" :class="[scroll>500?'menu-scroll':'']">
+                <span class="iconfont icon-caidan"></span>
+            </div>
+            <div v-if="navopen" class="nav-menu-content">
+                <div  v-for="(n, i) in nav" :key="i" class="nav-menu-item animated fadeInRight" :style="{animationDelay:i*0.25+'s'}">
                     <div class="nav-icon">
                         <img :src="'static/imgs/menu/'+n.id+'.png'">
                     </div>
