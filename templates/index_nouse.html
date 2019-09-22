@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="static/css/animate.min.css">
+    <script src="static/js/vue.js"></script>
+    <script src="static/js/axios.js"></script>
+    <script src="static/js/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+    <title>LoliMakeusFun</title>
+</head>
+<body>
+    
+    <!-- 视图:导航栏 -->
+    <template id="i-header">
+        <div class="header">
+            <div class="title">
+                <span class="wow rubberBand">LoliMakeusFun</span>
+            </div>
+            <div class="nav wow fadeInLeft">
+                <div @click="toView(n.id)" v-for="(n, index) in nav" :key="index" class="nav-btn" :class="[n.checked?'checked-sm checked-lg':'']">
+                    <span>${n.text}</span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 视图:首页 -->
+    <template id="i-home">
+        <div class="home">
+            
+            <div class="note">
+                <div class="note_img">
+                    <img src="static/imgs/miku.png">
+                </div>
+                <div class="note_content">
+                        当前访问次数:${visited_times}
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 视图:文章 -->
+    <template id="i-blog">
+        <div class="blog">
+            文章
+        </div>
+    </template>
+
+    <!-- 视图:资源 -->
+    <template id="i-res">
+        <div class="res">
+            资源
+        </div>
+    </template>
+
+    <!-- 视图:根视图 -->
+    <div id="app">
+        <!-- 子组件:导航栏 -->
+        <i-header @nav-btn-click="toView"></i-header>
+        <!-- 子组件:首页 -->
+        <i-home v-if="views.home"></i-home>
+        <!-- 子组件:文章 -->
+        <i-blog v-if="views.blog"></i-blog>
+        <!-- 子组件:资源 -->
+        <i-res v-if="views.res"></i-res>
+
+    </div>
+</body>
+<script>
+        // 组件:导航栏
+        Vue.component('i-header', {
+            delimiters: ['${', '}'],
+		    template:"#i-header",
+            data:function(){
+				return {
+                    nav:[
+                        {id:"home",text:"首页",checked:true},
+                        {id:"blog",text:"文章",checked:false},
+                        {id:"res",text:"资源",checked:false}
+                    ]
+				}
+			},
+			methods:{
+                toView:function (id) {
+                    for (var i in this.nav) {
+                        if (this.nav[i].id == id) {
+                            this.nav[i].checked = true; //更改样式为被选中
+                            this.$emit('nav-btn-click',id);    //发出切换视图请求
+                        }else{
+                            this.nav[i].checked = false;
+                        }
+                    }
+                }
+			},
+		});
+
+        // 组件:首页
+        Vue.component('i-home', {
+            delimiters: ['${', '}'],
+		    template:"#i-home",
+            data:function(){
+				return {
+                    visited_times:0
+				}
+			},
+            mounted() {
+                this.get_visited_times();
+            },
+            methods:{
+                //获取主页访问次数
+                get_visited_times:function(){
+                    var _this = this;
+                    axios.get("/visited_times/")
+                    .then(function(response){
+                        console.log(response);
+                        _this.visited_times = response.data.visited_times;
+                    })
+                    .catch(function(e){
+                        console.log(e);
+                    });
+                }
+            }
+        });
+
+        // 组件:文章
+        Vue.component('i-blog', {
+            delimiters: ['${', '}'],
+		    template:"#i-blog"
+        });
+
+        // 组件:资源
+        Vue.component('i-res', {
+            delimiters: ['${', '}'],
+		    template:"#i-res"
+        });
+
+        //Vue实例,根视图
+		var app = new Vue({
+			delimiters: ['${', '}'],
+			el:"#app",
+			data:function(){
+				return {
+                    views:{
+                        home:true,
+                        blog:false,
+                        res:false
+                    }
+				}
+			},
+			methods:{
+                toView:function(id){
+                    console.log("View Changed."); 
+                    for (var key in this.views) {
+                        if (key == id) {
+                            this.views[key]=true;
+                            console.log("当前视图:"+key); 
+                            
+                        }else{
+                            this.views[key]=false;
+                        }
+                    }
+                },
+                get:function(){
+                    axios.get("http://106.15.207.233/time.php")
+                    .then(function(response){
+                        console.log(response);
+                    })
+                    .catch(function(e){
+                        console.log(e);
+                    });
+                }
+			},
+		});
+
+        
+</script>
+</html>
