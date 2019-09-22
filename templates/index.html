@@ -28,8 +28,8 @@
                 </div>
             </div>
             <div @click="openMenu" class="nav-menu"></div>
-            <div class="nav-menu-content" :class="[navopen?'open':'']">
-                <div v-for="(n, i) in nav" :key="i" class="nav-menu-item">
+            <div v-if="navopen" class="nav-menu-content" :class="[navopen?'open':'']">
+                <div  v-for="(n, i) in nav" :key="i" class="nav-menu-item wow fadeInRight" :data-wow-delay="i*0.25+'s'">
                     <div class="nav-icon">
                         <img :src="'static/imgs/menu/'+n.id+'.png'">
                     </div>
@@ -38,7 +38,6 @@
                     </div>
                 </div>
             </div>
-            
             
         </div>
     </template>
