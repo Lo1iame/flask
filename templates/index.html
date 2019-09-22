@@ -19,10 +19,12 @@
     <!-- 视图:导航栏 -->
     <template id="i-header">
         <div class="header">
-            <div class="logo wow rubberBand">
+            <div class="logo wow rubberBand" :class="[scroll>500?'logo-scroll':'']">
                 <span>LoliMakeusFun</span>
             </div>
-            <div class="nav-btns wow fadeInDown">
+            <div class="nav-btns wow fadeInDown"
+            :style="{backgroundColor:formatColor}"
+            >
                 <div v-for="(n, i) in nav" :key="i" class="nav-btn">
                     <span>${n.text}</span>
                 </div>
@@ -72,8 +74,9 @@
     <!-- 视图:根视图 -->
     <div id="app">
         <!-- 子组件:导航栏 -->
-        <i-header @nav-btn-click="toView" @open-menu="openMenu"></i-header>
+        <i-header @nav-btn-click="toView"></i-header>
         <i-image></i-image>
+        <div style="height: 1000px;width: 100%"></div>
     </div>
 </body>
 <script>
@@ -90,15 +93,33 @@
                         {id:"posts",text:"归档",checked:false},
                         {id:"res",text:"资源",checked:false},
                         {id:"about",text:"关于",checked:false},
-                    ]
+                    ],
+                    scroll:0
 				}
 			},
+            mounted:function(){
+                window.addEventListener('scroll', this.handleScroll, true);
+            },
+            computed: {
+                formatColor:function(){
+                    var scroll = this.scroll;
+                    var rgb = 255-scroll/2>0?255-scroll/2:0;
+                    var color = 'rgba('+rgb+','+rgb+','+rgb+',0.4)';
+                    console.log(color);
+                    return color;
+                }
+            },
             methods:{
                 openMenu:function() {
                     this.navopen = !this.navopen;
                     console.log("侧边栏:"+this.navopen);
                     // this.$emit("open-menu");
+                },
+                handleScroll: function () {
+                    this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
+                    console.log(this.scroll)
                 }
+                
             }
         });
 
@@ -170,10 +191,7 @@
                         }
                     }
                 },
-                openMenu:function(){
-                    this.navopen = !this.navopen;
-                }
-            },
+            }
 		});
 
         
