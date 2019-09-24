@@ -1,24 +1,14 @@
 # -*- coding: utf-8 -*-
 
-#进入环境
-#source ../venv/bin/activate
-
-import datetime
-
-import pymongo
 from flask import Flask, jsonify, request,render_template
 from flask_cors import *
 from datetime import timedelta
 import json
+import blog
 
 app = Flask(__name__)
 CORS(app,resources={r"/*": {"origins": "*"}})
-
 app.send_file_max_age_default = timedelta(seconds=1)    #设置缓存文件过期时间，解决CSS不动态刷新的问题
-
-con = pymongo.MongoClient("localhost",27017)
-miku = con.miku
-
 
 #获取主页访问次数
 @app.route("/visited_times/")
@@ -37,11 +27,7 @@ def index():
     sever["visited_times"] = sever["visited_times"] + 1
     with open("./sever.json","w") as sever_json:
         json.dump(sever,sever_json)
-    
-    
-
     return render_template("index.html")
-
 
 #404页面
 @app.errorhandler(404)
@@ -53,61 +39,17 @@ def notFound(e):
 def get_fav():
     return app.send_static_file('favicon.ico')
 
-#读取弹幕
-@app.route("/api/danmu_read",methods=["GET","POST"])
-def danmu_read():
-    col = miku.danmu
-    results = col.find()
-    danmu = []
-    for r in results:
-        danmu.append(r['text'])
-    print(danmu)
-    return jsonify({'danmu':danmu})
-
-#保存弹幕
-@app.route("/api/danmu_save",methods=["POST"])
-def danmu_save():
-    text = request.form['text']
+#获取文章
+@app.route('/api/get_posts/<num>')
+def get_posts(num):
+    print(num)
     try:
-        col = miku.danmu
-        col.insert({'text': text})
-        code = 1
+        #num=0时获取全部文章
+        num = int(num)
+        posts = blog.find_byNum(num)
+        return jsonify({"code":1,"posts":posts})
     except:
-        code = 0
-    return jsonify({'code':code})
-
-#发送留言
-@app.route("/api/post_send",methods=["POST"])
-def post_send():
-    username = request.form['username']
-    post = request.form['post']
-    try:
-        col = miku.post
-        data = {
-           'username':username,
-           'post':post,
-           'date':datetime.datetime.now().strftime('%Y/%m/%d')
-        }
-        col.insert(data)
-        code = 1
-    except:
-        code = 0
-    return jsonify({'code':code})
-
-#获取留言
-@app.route("/api/post_get",methods=["GET","POST"])
-def post_get():
-    col = miku.post
-    results = col.find()
-    posts = []
-    for r in results:
-        post = {
-           'username':r['username'],
-            'post':r['post'],
-            'date':r['date']
-        }
-        posts.append(post)
-    return jsonify({'posts':posts})
+        return jsonify({"code":0})
 
 
 

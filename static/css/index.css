@@ -3,10 +3,48 @@ html,body{
     height: 100%;
     width: 100%;
     font-family: Comic Sans MS, "Comic Sans MS", Arial, sans-serif;
-    
+    background-color: #faf5fa;
 }
 body{
     -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+@font-face
+{
+    font-family: loli;
+    src: url('../font/萝莉体.ttf');
+}
+
+/* animate */
+.fadeInFast-enter-active {
+    animation: fadeInFast 0.5s;
+    animation-timing-function: linear;
+}
+.fadeInFast-leave-active {
+    animation: fadeInFast 0.5s reverse;
+    animation-timing-function: linear;
+}
+@keyframes fadeInFast{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.fadeOutFast-enter-active {
+    animation: fadeOutFast .5s;
+}
+.fadeOutFast-leave-active {
+    animation: fadeOutFast .5s reverse;
+}
+@keyframes fadeOutFast{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
 }
 
 /* PC */
@@ -161,6 +199,7 @@ body{
         /* background-color: #fff; */
         color:rgba(255, 255, 255, 0.8);
         font-size: 13px;
+        user-select: none;
     }
 
     .hitokoto{
@@ -193,10 +232,159 @@ body{
         float: right;
         text-shadow: 0px 0px 2px #fff;
     }
+
+    .image-saying{
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        user-select: none;
+    }
+    .image-saying span{
+        display: block;
+        line-height: 100px;
+        color: #ffafc9;
+        font-size: 60px;
+        font-family:loli;
+        letter-spacing: 20px;
+        text-indent: 20px;
+    }
+
     /* views */
     .views{
         min-height: 1000px;      
+        
     }
+    /* 主页 */
+    .posts-pannel{
+        margin-left: calc((100% - 700px) / 2);
+        width: 700px;
+        min-height:1000px; 
+        /* background-color: #ffafc9; */
+        
+    }
+    .post-card{
+        margin-top: 50px;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0px 0px 3px 0px #c4c3c3;
+    }
+    .post-card:last-child{
+        margin-bottom: 200px;
+    }
+    .post-cover{
+        width: 100%;
+        height: 250px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    .post-cover img{
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition:transform 1s;
+        
+    }
+    .post-cover:hover img{
+        transform: scale(1.1);
+    }
+    .post-title{
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.4);
+        /* overflow: hidden; */
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        color: #fff;
+        
+    }
+    .post-title span{
+        color: #fff;
+        padding-left: 10px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .post-content{
+        width: calc(100% - 40px);
+        max-height: 300px;
+        padding:20px;
+        overflow: hidden;
+    }
+    .post-readmore{
+        height: 40px;
+        /* background-color: #92b1ec; */
+        
+        letter-spacing: 3px;
+        text-indent: 3px;
+        text-align: center;
+    }
+    .post-readmore span{
+        position: relative;
+        color: #929fec;
+        line-height: 40px;
+        font-size: 14px;
+        user-select: none;
+        cursor: pointer;
+    }
+    .post-readmore span:hover:after{
+        width:calc(100% + 2px);
+    }
+    .post-readmore span::after{
+        text-align: center;
+        position: absolute;
+        content: "";
+        width:0px;
+        height: 2px;
+        top: 20px;
+        left: -2px;
+        background-color: #929fec;
+        transition:width 1s;
+    }
+    .post-footer{
+        width: 100%;
+        height: 40px;
+    }
+    .post-views{
+        position: relative;
+        float: right;
+        color: #94949bd7;
+        min-width: 70px;
+        
+    }
+    .post-like{
+        position: relative;
+        float: right;
+        margin-right:1px; 
+        color: #94949bd7;
+        min-width: 70px;
+        transition:color 0.2s;
+    }
+    .post-like:hover{
+        color: #ffafc9;
+        cursor: pointer;
+    }
+    .icon-liulan{
+        font-size: 25px!important;
+        vertical-align: middle;
+    }
+    .icon-zan{
+        position: relative;
+        top: -2px;
+        font-size: 23px!important;
+        vertical-align: middle;
+    }
+    .post-views-value,.post-like-value{
+        position: relative;
+        top: 1px;
+        font-size: 14px;
+    }
+
 }
 
 /* Mobile */
@@ -398,6 +586,7 @@ body{
         color: #fff;
         font-size: 11px;
         /* text-shadow: 0px 0px 2px #666666; */
+        user-select: none;
     }
 
     .hitokoto{
@@ -430,9 +619,142 @@ body{
         float: right;
         text-shadow: 0px 0px 2px #fff;
     }
+    .image-saying{
+        width: 100%;
+        height: 120px;
+        text-align: center;
+        user-select: none;
+    }
+    .image-saying span{
+        display: block;
+        line-height: 100px;
+        color: #ffafc9;
+        font-size: 25px;
+        font-family:loli;
+        letter-spacing: 5px;
+        text-indent: 5px;
+    }
 
     /* views */
     .views{
         min-height: 1000px;
+        width: 100%;
+    }
+    /* 主页 */
+    .posts-pannel{
+        margin-left: 2.5%;
+        width: 95%;
+        min-height: 1000px;
+        /* background-color: #ffafc9; */
+        
+    }
+    .post-card{
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0px 0px 3px 0px #c4c3c3;
+    }
+    .post-cover{
+        width: 100%;
+        height: 250px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    .post-cover img{
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition:transform 1s;
+        
+    }
+    .post-title{
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 40px;
+        background-color: rgba(0, 0, 0, 0.4);
+        /* overflow: hidden; */
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        color: #fff;
+        
+    }
+    .post-title span{
+        color: #fff;
+        padding-left: 10px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .post-content{
+        width: calc(100% - 40px);
+        max-height: 300px;
+        padding:20px;
+        overflow: hidden;
+    }
+    .post-readmore{
+        height: 40px;
+        /* background-color: #92b1ec; */
+        
+        letter-spacing: 3px;
+        text-indent: 3px;
+        text-align: center;
+    }
+    .post-readmore span{
+        position: relative;
+        color: #929fec;
+        line-height: 40px;
+        font-size: 14px;
+        user-select: none;
+        cursor: pointer;
+    }
+    .post-readmore span::after{
+        text-align: center;
+        position: absolute;
+        content: "";
+        width:calc(100% + 2px);
+        height: 2px;
+        top: 20px;
+        left: -2px;
+        background-color: #929fec;
+        transition:width 1s;
+    }
+    .post-footer{
+        margin-top: 20px;
+        width: 100%;
+        height: 40px;
+    }
+    .post-views{
+        position: relative;
+        float: right;
+        color: #94949bd7;
+        min-width: 70px;
+        
+    }
+    .post-like{
+        position: relative;
+        float: right;
+        margin-right:1px; 
+        color: #94949bd7;
+        min-width: 70px;
+        transition:color 0.2s;
+    }
+    .icon-liulan{
+        font-size: 25px!important;
+        vertical-align: middle;
+    }
+    .icon-zan{
+        position: relative;
+        top: -2px;
+        font-size: 23px!important;
+        vertical-align: middle;
+    }
+    .post-views-value,.post-like-value{
+        position: relative;
+        top: 1px;
+        font-size: 14px;
     }
 }
