@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="static/css/iconfont.css">
     <script src="static/js/vue.js"></script>
     <script src="static/js/axios.js"></script>
+    <script src="static/js/TweenMax.min.js"></script>
     <script src="static/js/wow.min.js"></script>
     <script>
         new WOW().init();
@@ -24,15 +25,23 @@
                 <span>LoliMakeusFun</span>
             </div>
             <div class="nav-btns animated fadeInDown":style="{backgroundColor:formatColor}">
-                <div v-for="(n, i) in nav" :key="i" class="nav-btn">
+                <div @click="toView(n.id)" v-for="(n, i) in nav" :key="i" class="nav-btn">
                     <span>${n.text}</span>
                 </div>
             </div>
             <div @click="openMenu" class="nav-menu" :class="[scroll>500?'menu-scroll':'']">
                 <span class="iconfont icon-caidan"></span>
             </div>
-            <div v-if="navopen" class="nav-menu-content">
-                <div  v-for="(n, i) in nav" :key="i" class="nav-menu-item animated fadeInRight" :style="{animationDelay:i*0.25+'s'}">
+            <div  class="nav-menu-content">
+                <transition v-for="(n, i) in nav"
+                    name="slide-fade"
+                    enter-active-class="animated fadeInRight"
+                    leave-active-class="animated fadeOutRight"
+                    @before-enter="navEnter"
+                    @after-leave="navLeave"
+                >
+                <div @click="toView(n.id)" v-if="navopen" :id="'nav-'+i" :key="i" class="nav-menu-item" 
+                :style="{animationDelay:i*0.075+'s'}">
                     <div class="nav-icon">
                         <img :src="'static/imgs/menu/'+n.id+'.png'">
                     </div>
@@ -40,11 +49,13 @@
                         <span>${n.text}</span>
                     </div>
                 </div>
+
+                </transition>
             </div>
             
         </div>
     </template>
-
+    <!-- 视图:背景图 -->
     <template id="i-image">
         <div class="image-view">
             <div class="image">
@@ -52,17 +63,17 @@
 
                     <span>${hitokoto.hitokoto}</span>
                 </div>
-                <div class="hitokoto-from">
+                <div v-if="hitokoto.from" class="hitokoto-from">
                     <span>——《${hitokoto.from}》</span>
                 </div>
                 <div class="image-visited">
-                    访问次数:${visited_times}
+                    访问次数:${visitedNum}
                 </div>
             </div>
             <div class="blogger">
                 <div class="blogger-info">
                     <div class="blogger-head">
-                        <img src="static/imgs/blogger.png" />
+                        <img src="static/imgs/blogger_min.jpg" :style="{boxShadow:img_loaded?'none':''}" />
                     </div>
                     <div class="blogger-name">
                         <span>Loriame</span>
@@ -71,13 +82,52 @@
             </div>
         </div>
     </template>
+    <!-- 视图:主页 -->
+    <template id="i-home">
+        <div>
+            首页
+        </div>
+    </template>
+    <!-- 视图:归档 -->
+    <template id="i-posts">
+        <div>
+            归档
+        </div>
+    </template>
+    <!-- 视图:资源 -->
+    <template id="i-res">
+        <div >
+            资源
+        </div>
+    </template>
+    <!-- 视图:关于 -->
+    <template id="i-about">
+        <div>
+            关于
+        </div>
+    </template>
 
     <!-- 视图:根视图 -->
     <div id="app">
         <!-- 子组件:导航栏 -->
         <i-header @nav-btn-click="toView"></i-header>
         <i-image></i-image>
-        <div style="height: 1000px;width: 100%"></div>
+        
+        <transition
+        enter-active-class="animated fadeInUp"
+        leave-active-class="animated fadeOutDown"
+        mode="out-in"
+        :duration="600"
+        >
+            <i-home v-if="views.home" :key="1" class="views"></i-home>
+            <i-posts v-if="views.posts" :key="2" class="views"></i-posts>
+            <i-res v-if="views.res" :key="3" class="views"></i-res>
+            <i-about v-if="views.about" :key="4" class="views"></i-about>
+  
+        </transition-group>
+
+
+        
     </div>
 </body>
 <script>
@@ -111,14 +161,24 @@
                 }
             },
             methods:{
+                toView:function(id){
+                    this.$emit("nav-btn-click",id);
+                },
                 openMenu:function() {
                     this.navopen = !this.navopen;
-                    console.log("侧边栏:"+this.navopen);
+                    // console.log("侧边栏:"+this.navopen);
                     // this.$emit("open-menu");
                 },
                 handleScroll: function () {
                     this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
-                    console.log(this.scroll)
+                    // console.log(this.scroll)
+                },
+                navEnter:function(){
+                    console.log("started");
+                    
+                },
+                navLeave:function(){
+                    console.log("finished");
                 }
                 
             }
@@ -131,12 +191,25 @@
             data:function(){
 				return {
                     visited_times:0,
-                    hitokoto:{}
+                    visited_times_animate:0,
+                    hitokoto:{},
+                    img_loaded:false
                 }
             },
             mounted() {
                 this.get_visited_times();
-                this.get_hitokoto();
+                // this.get_hitokoto();
+            },
+            computed:{
+                visitedNum:function(){
+                    return this.visited_times_animate.toFixed(0);
+                }
+            },
+            watch: {
+                visited_times:function(newValue){
+                    console.log("mie");
+                    TweenLite.to(this.$data, 1, { visited_times_animate: newValue });
+                }
             },
             methods:{
                 //获取主页访问次数
@@ -166,6 +239,73 @@
             }
         });
 
+        // 组件:首页
+        Vue.component('i-home',{
+            delimiters: ['${', '}'],
+            template:"#i-home",
+            data:function(){
+                return {
+                    
+                }
+            },
+            mounted:function(){
+
+            },
+            methods:{
+
+            }
+        });
+
+        // 组件:归档
+        Vue.component('i-posts',{
+            delimiters: ['${', '}'],
+            template:"#i-posts",
+            data:function(){
+                return {
+                    
+                }
+            },
+            mounted:function(){
+
+            },
+            methods:{
+
+            }
+        });
+
+        // 组件:资源
+        Vue.component('i-res',{
+            delimiters: ['${', '}'],
+            template:"#i-res",
+            data:function(){
+                return {
+                    
+                }
+            },
+            mounted:function(){
+
+            },
+            methods:{
+
+            }
+        });
+
+        // 组件:关于
+        Vue.component('i-about',{
+            delimiters: ['${', '}'],
+            template:"#i-about",
+            data:function(){
+                return {
+                    
+                }
+            },
+            mounted:function(){
+
+            },
+            methods:{
+
+            }
+        });
 
         //Vue实例,根视图
 		var app = new Vue({
@@ -176,6 +316,9 @@
                     navopen:false,
                     views:{
                         home:true,
+                        posts:false,
+                        about:false,
+                        res:false
                     }
 				}
 			},

@@ -86,7 +86,7 @@ body{
         position: relative;
         width: 100%;
         height: 500px;
-        background-image: url(../imgs/38183202_p0.jpg);
+        background-image: url(../imgs/38183202_p0_min.jpg);
         background-size: 100% auto;
         background-position-y: 50%;
         background-repeat: no-repeat;
@@ -295,6 +295,8 @@ body{
         color: #fff;
     }
 
+
+
     /* i-image */
     .image-view{
         width: 100%;
@@ -397,5 +399,10 @@ body{
         font-size: 14px;
         float: right;
         text-shadow: 0px 0px 2px #fff;
+    }
+
+    /* views */
+    .views{
+        animation-duration: 0.2s;
     }
 }
