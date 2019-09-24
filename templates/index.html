@@ -89,19 +89,19 @@
     </template>
     <!-- 视图:主页 -->
     <template id="i-home">
-        <div>
-            首页
+        <div class="views">
+            <img src="static/imgs/miku.png" />
         </div>
     </template>
     <!-- 视图:归档 -->
     <template id="i-posts">
-        <div>
+        <div class="views">
             归档
         </div>
     </template>
     <!-- 视图:资源 -->
     <template id="i-res">
-        <div >
+        <div class="views">
             资源
         </div>
     </template>
@@ -109,7 +109,7 @@
     <template id="i-about">
         <div>
             关于
-        </div>
+        </div class="views">
     </template>
 
     <!-- 视图:根视图 -->
@@ -124,10 +124,10 @@
         mode="out-in"
         :duration="600"
         >
-            <i-home v-if="views.home" :key="1" class="views"></i-home>
-            <i-posts v-if="views.posts" :key="2" class="views"></i-posts>
-            <i-res v-if="views.res" :key="3" class="views"></i-res>
-            <i-about v-if="views.about" :key="4" class="views"></i-about>
+            <i-home v-if="views.home" :key="1"></i-home>
+            <i-posts v-if="views.posts" :key="2"></i-posts>
+            <i-res v-if="views.res" :key="3"></i-res>
+            <i-about v-if="views.about" :key="4"></i-about>
   
         </transition-group>
 
@@ -253,7 +253,18 @@
             template:"#i-home",
             data:function(){
                 return {
-                    
+                    posts:[
+                        // 一篇日志的属性
+                        {
+                            id:0,
+                            cover:"xkn0.jpg",   //封面url
+                            title:"咩", //标题
+                            content:"呱",   //内容 html代码
+                            create_time:"2019.9.24",    //创建时间
+                            author:"",  //作者 
+                            views:"",    //浏览量
+                        }
+                    ]
                 }
             },
             mounted:function(){
