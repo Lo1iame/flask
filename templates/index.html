@@ -33,7 +33,7 @@
                 <span class="iconfont icon-caidan"></span>
             </div>
             <div  class="nav-menu-content">
-                <transition v-for="(n, i) in nav"
+                <transition v-for="(n, i) in nav"   :key="i"
                     name="slide-fade"
                     enter-active-class="animated fadeInRight"
                     leave-active-class="animated fadeOutRight"
@@ -75,26 +75,59 @@
                     <div class="blogger-head" :style="{animation:img_loaded?'shine 1s linear forwards':'none'}">
                         <img src="static/imgs/blogger_min.jpg" @load="img_load" />
                     </div>
-                    <transition
-                    enter-active-class="animated jackInTheBox"
-                    >
+                    <transition enter-active-class="animated jackInTheBox">
                         <div v-if="img_loaded" class="blogger-name">
-                            <span class="animated jackInTheBox">Loriame</span>
+                            <span>Loriame</span>
                         </div>
                     </transition>
 
                 </div>
             </div>
+            
+            <div  class="image-saying">
+                 <span class="animated fadeInUp">永远相信世界依然美好</span>
+            </div>
+  
         </div>
     </template>
     <!-- 视图:主页 -->
     <template id="i-home">
         <div class="views">
-            <img src="static/imgs/miku.png" />
+            <div class="posts-pannel">
+                <div v-for="(post, index) in posts" :key="index" class="post-card">
+                    <div class="post-cover">
+                        <img :src="'static/imgs/cover/'+post.cover">
+                        <!-- <img src="static/imgs/miku.png"> -->
+                        <div class="post-title">
+                            <span>${post.title}测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字</span>
+                        </div>  
+                    </div>
+                    <div class="post-content">
+                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
+                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
+                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
+                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
+                    </div>
+
+                    <div class="post-readmore">
+                        <span>阅读全文</span>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-views">
+                            <span class="iconfont icon-liulan"></span>
+                            <span class="post-views-value">${post.views}</span>
+                        </div>
+                        <div class="post-like">
+                            <span class="iconfont icon-zan"></span>
+                            <span class="post-like-value">${post.like}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </template>
     <!-- 视图:归档 -->
-    <template id="i-posts">
+    <template id="i-history">
         <div class="views">
             归档
         </div>
@@ -107,9 +140,9 @@
     </template>
     <!-- 视图:关于 -->
     <template id="i-about">
-        <div>
+        <div class="views">
             关于
-        </div class="views">
+        </div>
     </template>
 
     <!-- 视图:根视图 -->
@@ -119,13 +152,11 @@
         <i-image></i-image>
         
         <transition
-        enter-active-class="animated fadeInUp"
-        leave-active-class="animated fadeOutDown"
+        name="fadeInFast"
         mode="out-in"
-        :duration="600"
         >
             <i-home v-if="views.home" :key="1"></i-home>
-            <i-posts v-if="views.posts" :key="2"></i-posts>
+            <i-history v-if="views.history" :key="2"></i-history>
             <i-res v-if="views.res" :key="3"></i-res>
             <i-about v-if="views.about" :key="4"></i-about>
   
@@ -146,7 +177,7 @@
                     navopen:false,
                     nav:[
                         {id:"home",text:"首页",checked:true},
-                        {id:"posts",text:"归档",checked:false},
+                        {id:"history",text:"归档",checked:false},
                         {id:"res",text:"资源",checked:false},
                         {id:"about",text:"关于",checked:false},
                     ],
@@ -257,12 +288,23 @@
                         // 一篇日志的属性
                         {
                             id:0,
-                            cover:"xkn0.jpg",   //封面url
+                            cover:"miku.png",   //封面url
                             title:"咩", //标题
                             content:"呱",   //内容 html代码
                             create_time:"2019.9.24",    //创建时间
                             author:"",  //作者 
-                            views:"",    //浏览量
+                            views:1,    //浏览量
+                            like:0 //点赞
+                        },
+                        {
+                            id:0,
+                            cover:"新科娘.jpg",   //封面url
+                            title:"咩", //标题
+                            content:"呱",   //内容 html代码
+                            create_time:"2019.9.24",    //创建时间
+                            author:"",  //作者 
+                            views:1,    //浏览量
+                            like:0 //点赞
                         }
                     ]
                 }
@@ -276,9 +318,9 @@
         });
 
         // 组件:归档
-        Vue.component('i-posts',{
+        Vue.component('i-history',{
             delimiters: ['${', '}'],
-            template:"#i-posts",
+            template:"#i-history",
             data:function(){
                 return {
                     
@@ -335,7 +377,7 @@
                     navopen:false,
                     views:{
                         home:true,
-                        posts:false,
+                        history:false,
                         about:false,
                         res:false
                     }
