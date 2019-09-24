@@ -72,12 +72,17 @@
             </div>
             <div class="blogger">
                 <div class="blogger-info">
-                    <div class="blogger-head">
-                        <img src="static/imgs/blogger_min.jpg" :style="{boxShadow:img_loaded?'none':''}" />
+                    <div class="blogger-head" :style="{animation:img_loaded?'shine 1s linear forwards':'none'}">
+                        <img src="static/imgs/blogger_min.jpg" @load="img_load" />
                     </div>
-                    <div class="blogger-name">
-                        <span>Loriame</span>
-                    </div>
+                    <transition
+                    enter-active-class="animated jackInTheBox"
+                    >
+                        <div v-if="img_loaded" class="blogger-name">
+                            <span class="animated jackInTheBox">Loriame</span>
+                        </div>
+                    </transition>
+
                 </div>
             </div>
         </div>
@@ -156,7 +161,7 @@
                     var scroll = this.scroll;
                     var rgb = 255-scroll/2>0?255-scroll/2:0;
                     var color = 'rgba('+rgb+','+rgb+','+rgb+',0.4)';
-                    console.log(color);
+                    // console.log(color);
                     return color;
                 }
             },
@@ -207,7 +212,6 @@
             },
             watch: {
                 visited_times:function(newValue){
-                    console.log("mie");
                     TweenLite.to(this.$data, 1, { visited_times_animate: newValue });
                 }
             },
@@ -217,7 +221,7 @@
                     var _this = this;
                     axios.get("/visited_times/")
                     .then(function(response){
-                        console.log(response.data);
+                        // console.log(response.data);
                         _this.visited_times = response.data.visited_times;
                     })
                     .catch(function(e){
@@ -229,12 +233,16 @@
                     var _this = this;
                     axios.get("https://v1.hitokoto.cn/?c=a")
                     .then(function(response){
-                        console.log(response.data);
+                        // console.log(response.data);
                         _this.hitokoto = response.data;
                     })
                     .catch(function(e){
                         console.log(e);
                     });
+                },
+                img_load:function(){
+                    console.log("blogger's head loaded.");
+                    this.img_loaded = true;
                 }
             }
         });
