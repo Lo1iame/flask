@@ -9,6 +9,7 @@ body{
     -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
+/* PC */
 @media screen and (min-width: 700px){
     /* i-header */
     .header{
@@ -192,9 +193,13 @@ body{
         float: right;
         text-shadow: 0px 0px 2px #fff;
     }
+    /* views */
+    .views{
+        min-height: 1000px;      
+    }
 }
 
-
+/* Mobile */
 @media screen and (max-width: 700px){
     /* i-header */
     .header{
@@ -428,6 +433,6 @@ body{
 
     /* views */
     .views{
-        animation-duration: 0.2s;
+        min-height: 1000px;
     }
 }
