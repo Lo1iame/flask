@@ -33,7 +33,7 @@
                 <span class="iconfont icon-caidan"></span>
             </div>
             <div  class="nav-menu-content">
-                <transition v-for="(n, i) in nav"   :key="i"
+                <transition v-for="(n, i) in nav" :key="i"
                     name="slide-fade"
                     enter-active-class="animated fadeInRight"
                     leave-active-class="animated fadeOutRight"
@@ -99,14 +99,21 @@
                         <img :src="'static/imgs/cover/'+post.cover">
                         <!-- <img src="static/imgs/miku.png"> -->
                         <div class="post-title">
-                            <span>${post.title}测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字</span>
+                            <span>${post.title}</span>
                         </div>  
                     </div>
                     <div class="post-content">
-                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
-                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
-                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
-                            测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文
+                        <div v-html="post.text"></div>                       
+                    </div>
+                    <div v-if="post.imgs.length>0" class="post-imgs">
+                        <div v-for="(img, index) in post.imgs" :key="index" class="post-img"
+                            :class="[post.imgs.length==1?'post-img-one':'',post.imgs.length==2?'post-img-two':'']"
+                        > 
+                            <a :href="img" target="_blank"><img :src="img" /></a>
+                            <div class="post-img-box">
+                                <img :src="img" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="post-readmore">
@@ -147,6 +154,7 @@
 
     <!-- 视图:根视图 -->
     <div id="app">
+        <!-- <img class="bg" src="static/imgs/新科娘.jpg"/> -->
         <!-- 子组件:导航栏 -->
         <i-header @nav-btn-click="toView"></i-header>
         <i-image></i-image>
@@ -284,35 +292,54 @@
             template:"#i-home",
             data:function(){
                 return {
-                    posts:[
-                        // 一篇日志的属性
-                        {
-                            id:0,
-                            cover:"miku.png",   //封面url
-                            title:"咩", //标题
-                            content:"呱",   //内容 html代码
-                            create_time:"2019.9.24",    //创建时间
-                            author:"",  //作者 
-                            views:1,    //浏览量
-                            like:0 //点赞
-                        },
-                        {
-                            id:0,
-                            cover:"新科娘.jpg",   //封面url
-                            title:"咩", //标题
-                            content:"呱",   //内容 html代码
-                            create_time:"2019.9.24",    //创建时间
-                            author:"",  //作者 
-                            views:1,    //浏览量
-                            like:0 //点赞
-                        }
-                    ]
+                    posts:[]
                 }
             },
             mounted:function(){
-
+                this.get_posts();
             },
             methods:{
+                get_posts:function(){
+                    var _this = this;
+                    axios.get("/api/get_posts/3/")  //数字指定返回的文章数量
+                    .then(function(response){
+                        console.log(response.data);
+                        if(response.data.code == 1)
+                        // _this.posts = response.data.posts;
+                        _this.posts = _this.parse(response.data.posts);
+                    })
+                    .catch(function(e){
+                        console.log(e);
+                    });
+                },
+                parse:function(posts){
+                    var imgReg = /<img.*?(?:>|\/>)/gi;  //图片标签正则
+                    var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;   //src正则
+
+                    for(var i in posts){
+                        var content = posts[i].content; //获取内容html
+                        var els = content.match(imgReg);    //匹配内容中的图片
+                        console.log(els);
+                        var html = content;
+                        console.log(html);
+                        var source = [];
+                        for(var n in els) {
+                            var imgSrc = els[n].match(srcReg);  //匹配src
+                            source.push(imgSrc[1]); //将src加入数组
+
+                            var doms = content.split(els[n]);   //在html中去除此img标签
+                            var html = doms.join("");   //拼接得到的结果
+                        }
+
+                        posts[i].text = html;
+                        posts[i].imgs = source;     //图片列表加入对象中
+
+                        // console.log(els);
+                        // console.log(source);
+                        console.log(posts);
+                    }
+                    return posts
+                }
 
             }
         });

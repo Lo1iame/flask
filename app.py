@@ -40,7 +40,7 @@ def get_fav():
     return app.send_static_file('favicon.ico')
 
 #获取文章
-@app.route('/api/get_posts/<num>')
+@app.route('/api/get_posts/<num>/')
 def get_posts(num):
     print(num)
     try:
