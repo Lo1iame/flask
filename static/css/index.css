@@ -13,6 +13,11 @@ body{
     background-attachment: fixed; */
 }
 
+a{
+    text-decoration: none;
+    color:inherit;
+}
+
 
 @font-face
 {
@@ -60,7 +65,7 @@ body{
         position: fixed;
         width: 100%;
         height: auto;
-        filter: blur(20px);
+        filter: blur(5px);
         z-index: -1;
     }
     .header{
@@ -348,8 +353,6 @@ body{
     .post-imgs{
         width: 100%;
         min-height: 150px;
-        /* background-color: #929fec; */
-        /* overflow: hidden; */
     }
     .post-imgs::after{
         clear:both;
@@ -381,10 +384,13 @@ body{
     .post-img img:hover{
         transform: scale(1.05);
     }
-    .post-img:hover .post-img-box{
-        display: block;
-        
+    @media screen and (min-width:1000px){
+        .post-img:hover .post-img-box{
+            display: block; 
+        }   
     }
+
+    
     .post-img-box{
         position: absolute;
         background-color: #92b1ec;
@@ -394,11 +400,11 @@ body{
         left:-252.5px;
         display: none;
         animation: fadeInFast 0.2s linear;
-    }
+    } 
 
-    .post-readmore{
+     .post-readmore{
         height: 40px;
-        /* background-color: #92b1ec; */
+   
         
         letter-spacing: 3px;
         text-indent: 3px;
@@ -425,8 +431,8 @@ body{
         left: -2px;
         background-color: #929fec;
         transition:width 1s;
-    }
-    .post-footer{
+    } 
+     .post-footer{
         width: 100%;
         height: 40px;
     }
@@ -448,8 +454,8 @@ body{
     .post-like:hover{
         color: #ffafc9;
         cursor: pointer;
-    }
-    .icon-liulan{
+    } 
+     .icon-liulan{
         font-size: 25px!important;
         vertical-align: middle;
     }

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="static/css/animate.min.css">
     <link rel="stylesheet" href="static/css/iconfont.css">
     <script src="static/js/vue.js"></script>
+    <script src="static/js/vue-router.js"></script>
     <script src="static/js/axios.js"></script>
     <script src="static/js/TweenMax.min.js"></script>
     <script src="static/js/wow.min.js"></script>
@@ -25,8 +26,10 @@
                 <span>LoliMakeusFun</span>
             </div>
             <div class="nav-btns animated fadeInDown":style="{backgroundColor:formatColor}">
-                <div @click="toView(n.id)" v-for="(n, i) in nav" :key="i" class="nav-btn">
-                    <span>${n.text}</span>
+                <div  v-for="(n, i) in nav" :key="i" class="nav-btn">
+                    <span>
+                        <router-link :to="'/'+n.id">${n.text}</router-link>
+                    </span>
                 </div>
             </div>
             <div @click="openMenu" class="nav-menu" :class="[scroll>500?'menu-scroll':'']">
@@ -42,12 +45,14 @@
                 >
                 <div @click="toView(n.id)" v-if="navopen" :id="'nav-'+i" :key="i" class="nav-menu-item" 
                 :style="{animationDelay:i*0.075+'s'}">
-                    <div class="nav-icon">
-                        <img :src="'static/imgs/menu/'+n.id+'.png'">
-                    </div>
-                    <div class="nav-text">
-                        <span>${n.text}</span>
-                    </div>
+                    <router-link :to="'/'+n.id">
+                        <div class="nav-icon">
+                            <img :src="'static/imgs/menu/'+n.id+'.png'">
+                        </div>
+                        <div class="nav-text">
+                            <span>${n.text}</span>
+                        </div>
+                    </router-link>
                 </div>
 
                 </transition>
@@ -154,7 +159,7 @@
 
     <!-- 视图:根视图 -->
     <div id="app">
-        <!-- <img class="bg" src="static/imgs/新科娘.jpg"/> -->
+        <img class="bg" src="static/imgs/mie.png"/>
         <!-- 子组件:导航栏 -->
         <i-header @nav-btn-click="toView"></i-header>
         <i-image></i-image>
@@ -163,13 +168,14 @@
         name="fadeInFast"
         mode="out-in"
         >
-            <i-home v-if="views.home" :key="1"></i-home>
+            <router-view></router-view>
+            <!-- <i-home v-if="views.home" :key="1"></i-home>
             <i-history v-if="views.history" :key="2"></i-history>
             <i-res v-if="views.res" :key="3"></i-res>
-            <i-about v-if="views.about" :key="4"></i-about>
+            <i-about v-if="views.about" :key="4"></i-about> -->
   
-        </transition-group>
-
+        </transition>
+        
 
         
     </div>
@@ -177,7 +183,7 @@
 <script>
 
         // 组件:导航栏
-        Vue.component('i-header', {
+        const cHeader = Vue.component('i-header', {
             delimiters: ['${', '}'],
 		    template:"#i-header",
             data:function(){
@@ -229,7 +235,7 @@
         });
 
         // 组件:背景图
-        Vue.component('i-image', {
+        const cImage = Vue.component('i-image', {
             delimiters: ['${', '}'],
 		    template:"#i-image",
             data:function(){
@@ -287,7 +293,7 @@
         });
 
         // 组件:首页
-        Vue.component('i-home',{
+        const cHome = Vue.component('i-home',{
             delimiters: ['${', '}'],
             template:"#i-home",
             data:function(){
@@ -345,7 +351,7 @@
         });
 
         // 组件:归档
-        Vue.component('i-history',{
+        const cHistory = Vue.component('i-history',{
             delimiters: ['${', '}'],
             template:"#i-history",
             data:function(){
@@ -362,7 +368,7 @@
         });
 
         // 组件:资源
-        Vue.component('i-res',{
+        const cRes = Vue.component('i-res',{
             delimiters: ['${', '}'],
             template:"#i-res",
             data:function(){
@@ -379,7 +385,7 @@
         });
 
         // 组件:关于
-        Vue.component('i-about',{
+        const cAbout = Vue.component('i-about',{
             delimiters: ['${', '}'],
             template:"#i-about",
             data:function(){
@@ -395,9 +401,22 @@
             }
         });
 
+
+        const routes = [
+            { path: '/home', component: cHome},
+            { path: '/history', component: cHistory},
+            { path: '/res', component: cRes},
+            { path: '/about', component: cAbout},
+        ];
+
+        const router = new VueRouter({
+            routes
+        });
+
         //Vue实例,根视图
 		var app = new Vue({
-			delimiters: ['${', '}'],
+            delimiters: ['${', '}'],
+            router,
 			el:"#app",
 			data:function(){
 				return {
