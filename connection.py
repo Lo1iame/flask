@@ -1,4 +1,5 @@
+# -*- coding: utf-8 -*-
 import pymongo
 
 #ip和端口统一配置
-con = pymongo.MongoClient("47.102.136.23",27017)
+con = pymongo.MongoClient("localhost",27017)

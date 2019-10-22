@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from connection import con
 from bson.objectid import ObjectId
 

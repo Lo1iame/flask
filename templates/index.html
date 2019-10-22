@@ -47,7 +47,7 @@
                 :style="{animationDelay:i*0.075+'s'}">
                     <router-link :to="'/'+n.id">
                         <div class="nav-icon">
-                            <img :src="'static/imgs/menu/'+n.id+'.png'">
+                            <img :src="'static/imgs/menu/'+n.id+'.png'" />
                         </div>
                         <div class="nav-text">
                             <span>${n.text}</span>
@@ -248,7 +248,7 @@
             },
             mounted() {
                 this.get_visited_times();
-                // this.get_hitokoto();
+                this.get_hitokoto();
             },
             computed:{
                 visitedNum:function(){
